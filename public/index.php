@@ -44,7 +44,7 @@ foreach ($lines as &$line) {
                 if (preg_match('/group-title="[^"]*"/', $line)) {
                     $line = preg_replace('/group-title="[^"]*"/', 'group-title="Jio1-' . $lang . '"', $line);
                 } else {
-                    $line = preg_replace('/(tvg-logo="[^"]*")/', '$1 group-title="Jio1-' . $lang . '"', $line);
+                    $line = preg_replace('/(tvg-logo="[^"]*")/', '$1 group-title="' . $lang . '"', $line);
                 }
             }
         }
@@ -59,10 +59,24 @@ $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // Follow redirects
-curl_setopt($ch, CURLOPT_USERAGENT, "TiviMate/4.7.0 Android"); // TiviMate-like agent
+curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10); // Timeout in 10 sec
+curl_setopt($ch, CURLOPT_USERAGENT, "TiviMate/5.1.6 Android"); // TiviMate-like agent
+curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Max execution time 30 sec
 
 $response = curl_exec($ch);
 curl_close($ch);
 echo $response;
+
+
+$url = "https://arunjunan20.github.io/My-IPTV/"; // Your API URL
+$ch = curl_init(); 
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10); // Timeout in 10 sec
+curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Max execution time 30 sec
+
+$response = curl_exec($ch);
+curl_close($ch);
+echo "$response";
 exit;
 ?>
