@@ -21,9 +21,21 @@ foreach ($json as $item) {
         ];
     }
 }
+$url = "https://m3u.ygxworld.in/p/KzKr3LpT0jEe/playlist.m3u";
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // Follow redirects
+curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10); // Timeout in 10 sec
+curl_setopt($ch, CURLOPT_USERAGENT, "TiviMate/5.1.6 Android"); // TiviMate-like agent
+curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Max execution time 30 sec
+
+$response = curl_exec($ch);
+curl_close($ch);
 
 // Process M3U lines
-$combined_m3u = $jiom3u . "\n" . $zee5m3u;
+$combined_m3u = $jiom3u . "\n" . $zee5m3u. "\n". $response;
 $lines = explode("\n", $combined_m3u);
 foreach ($lines as &$line) {
     if (strpos($line, '#EXTINF:') === 0) {
@@ -40,11 +52,17 @@ foreach ($lines as &$line) {
                     $line = preg_replace('/(tvg-id="[^"]+")/', '$1 tvg-logo="' . $logo . '"', $line);
                 }
 
-                // Update or insert group-title
-                if (preg_match('/group-title="[^"]*"/', $line)) {
-                    $line = preg_replace('/group-title="[^"]*"/', 'group-title="Jio1-' . $lang . '"', $line);
-                } else {
-                    $line = preg_replace('/(tvg-logo="[^"]*")/', '$1 group-title="' . $lang . '"', $line);
+                if (preg_match('/group-title="JIO TV\+|"/i', $line)) 
+                {
+                    $line = preg_replace('/group-title="[^"]*"/', 'group-title="Jio2-' . $lang . '"', $line);
+                } 
+                else 
+                {
+                    if (preg_match('/group-title="[^"]*"/', $line)) {
+                        $line = preg_replace('/group-title="[^"]*"/', 'group-title="Jio1-' . $lang . '"', $line);
+                    } else {
+                        $line = preg_replace('/(tvg-logo="[^"]*")/', '$1 group-title="' . $lang . '"', $line);
+                    }
                 }
             }
         }
@@ -52,21 +70,6 @@ foreach ($lines as &$line) {
 }
 header('Content-Type: text/plain');
 echo implode("\n", $lines);
-
-$url = "https://m3u.ygxworld.in/p/KzKr3LpT0jEe/playlist.m3u";
-
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $url);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // Follow redirects
-curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10); // Timeout in 10 sec
-curl_setopt($ch, CURLOPT_USERAGENT, "TiviMate/5.1.6 Android"); // TiviMate-like agent
-curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Max execution time 30 sec
-
-$response = curl_exec($ch);
-curl_close($ch);
-echo $response;
-
 
 $url = "https://arunjunan20.github.io/My-IPTV/"; // Your API URL
 $ch = curl_init(); 
