@@ -35,7 +35,7 @@ $response = curl_exec($ch);
 curl_close($ch);
 
 // Process M3U lines
-$combined_m3u = $jiom3u . "\n" . $zee5m3u. "\n". $response;
+$combined_m3u = $zee5m3u. "\n". $response;
 $lines = explode("\n", $combined_m3u);
 foreach ($lines as &$line) {
     if (strpos($line, '#EXTINF:') === 0) {
@@ -54,7 +54,7 @@ foreach ($lines as &$line) {
 
                 if (preg_match('/group-title="JIO TV\+|"/i', $line)) 
                 {
-                    $line = preg_replace('/group-title="[^"]*"/', 'group-title="Jio2-' . $lang . '"', $line);
+                    $line = preg_replace('/group-title="[^"]*"/', 'group-title="Jio3-' . $lang . '"', $line);
                 } 
                 else 
                 {
