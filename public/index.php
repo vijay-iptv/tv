@@ -44,9 +44,12 @@ foreach ($lines as &$line) {
             if (isset($channelMap[$id])) {
                 $logo = $channelMap[$id]['logo'];
                 $lang = $channelMap[$id]['language'];
-                if (preg_match('/tvg-logo="[^"]*"/', $line)) {
+                if (preg_match('/tvg-logo="[^"]*"/', $line))
+                {
                     $line = preg_replace('/tvg-logo="[^"]*"/', 'tvg-logo="' . $logo . '"', $line);
-                } else {
+                }
+                else 
+                {
                     $line = preg_replace('/(tvg-id="[^"]+")/', '$1 tvg-logo="' . $logo . '"', $line);
                 }
                 if (preg_match('/group-title="JIO TV\+ \|[^"]*"/', $line) && $channelMap[$id] != '') 
