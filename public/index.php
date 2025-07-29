@@ -35,7 +35,7 @@ $response = curl_exec($ch);
 curl_close($ch);
 
 // Process M3U lines
-$combined_m3u = $zee5m3u. "\n". $response;
+$combined_m3u = $jiom3u ."\n". $zee5m3u. "\n". $response;
 $lines = explode("\n", $combined_m3u);
 foreach ($lines as &$line) {
     if (strpos($line, '#EXTINF:') === 0) {
@@ -44,25 +44,18 @@ foreach ($lines as &$line) {
             if (isset($channelMap[$id])) {
                 $logo = $channelMap[$id]['logo'];
                 $lang = $channelMap[$id]['language'];
-
-                // Update or insert tvg-logo
                 if (preg_match('/tvg-logo="[^"]*"/', $line)) {
                     $line = preg_replace('/tvg-logo="[^"]*"/', 'tvg-logo="' . $logo . '"', $line);
                 } else {
                     $line = preg_replace('/(tvg-id="[^"]+")/', '$1 tvg-logo="' . $logo . '"', $line);
                 }
-
-                if (preg_match('/group-title="JIO TV\+|"/i', $line)) 
+                if (preg_match('/group-title="JIO TV\+ \|[^"]*"/', $line) && $channelMap[$id] != '') 
                 {
-                    $line = preg_replace('/group-title="[^"]*"/', 'group-title="Jio3-' . $lang . '"', $line);
-                } 
-                else 
+                    $line = preg_replace('/group-title="JIO TV\+ \|[^"]*"/', 'group-title="JioPlus-' . $lang . '"', $line);
+                }
+                else
                 {
-                    if (preg_match('/group-title="[^"]*"/', $line)) {
-                        $line = preg_replace('/group-title="[^"]*"/', 'group-title="Jio1-' . $lang . '"', $line);
-                    } else {
-                        $line = preg_replace('/(tvg-logo="[^"]*")/', '$1 group-title="' . $lang . '"', $line);
-                    }
+                    $line = preg_replace('/group-title="[^"]*"/', 'group-title="JioStar-' . $lang . '"', $line);
                 }
             }
         }
