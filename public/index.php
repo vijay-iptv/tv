@@ -33,11 +33,9 @@ curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Max execution time 30 sec
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 
-// Verbose logging
-curl_setopt($ch, CURLOPT_VERBOSE, true);
 $response = curl_exec($ch);
 curl_close($ch);
-
+echo $response;
 // Process M3U lines
 $combined_m3u = $jiom3u ."\n". $zee5m3u. "\n". $response;
 $lines = explode("\n", $combined_m3u);
