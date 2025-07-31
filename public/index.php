@@ -35,7 +35,7 @@ curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 
 $response = curl_exec($ch);
 curl_close($ch);
-echo $response;
+
 // Process M3U lines
 $combined_m3u = $jiom3u ."\n". $zee5m3u. "\n". $response;
 $lines = explode("\n", $combined_m3u);
