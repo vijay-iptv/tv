@@ -32,7 +32,6 @@ curl_setopt($ch, CURLOPT_USERAGENT, "TiviMate/5.1.6 Android"); // TiviMate-like 
 curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Max execution time 30 sec
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-
 $response = curl_exec($ch);
 curl_close($ch);
 
