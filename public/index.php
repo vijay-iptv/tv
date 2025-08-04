@@ -74,7 +74,7 @@ foreach ($lines as &$line) {
 header('Content-Type: text/plain');
 echo implode("\n", $lines);
 
-/*$url = "https://arunjunan20.github.io/My-IPTV/"; // Your API URL
+$url = "https://arunjunan20.github.io/My-IPTV/"; // Your API URL
 $ch = curl_init(); 
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -95,5 +95,5 @@ curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Max execution time 30 sec
 $response = curl_exec($ch);
 curl_close($ch);
 echo "$response";
-exit;*/
+exit;
 ?>
