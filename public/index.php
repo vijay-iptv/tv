@@ -27,9 +27,9 @@ $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // Follow redirects
-curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10); // Timeout in 10 sec
+curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 60); // Timeout in 10 sec
 curl_setopt($ch, CURLOPT_USERAGENT, "TiviMate/5.1.6 Android"); // TiviMate-like agent
-curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Max execution time 30 sec
+curl_setopt($ch, CURLOPT_TIMEOUT, 60); // Max execution time 30 sec
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 $response = curl_exec($ch);
