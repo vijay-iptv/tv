@@ -30,7 +30,7 @@ curl_setopt_array($ch, [
     CURLOPT_FOLLOWLOCATION => true,
     CURLOPT_CONNECTTIMEOUT => 10,
     CURLOPT_TIMEOUT => 30,
-    CURLOPT_USERAGENT => "OTTNavigator/1.6.5 Android",
+    CURLOPT_USERAGENT => "TiviMate/5.1.6 Android",
     CURLOPT_SSL_VERIFYPEER => false,
     CURLOPT_SSL_VERIFYHOST => false,
     CURLOPT_HTTPHEADER => [
