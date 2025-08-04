@@ -22,19 +22,24 @@ foreach ($json as $item) {
     }
 }
 $url = "https://m3u.ygxworld.in/p/KzKr3LpT0jEe/playlist.m3u";
-
 $ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $url);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // Follow redirects
-curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 60); // Timeout in 10 sec
-curl_setopt($ch, CURLOPT_USERAGENT, "TiviMate/5.1.6 Android"); // TiviMate-like agent
-curl_setopt($ch, CURLOPT_TIMEOUT, 60); // Max execution time 30 sec
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+
+curl_setopt_array($ch, [
+    CURLOPT_URL => $url,
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_CONNECTTIMEOUT => 10,
+    CURLOPT_TIMEOUT => 30,
+    CURLOPT_USERAGENT => "TiviMate/5.1.6 Android",
+    CURLOPT_SSL_VERIFYPEER => false,
+    CURLOPT_SSL_VERIFYHOST => false,
+    CURLOPT_HTTPHEADER => [
+        "Accept: */*",
+        "Connection: keep-alive"
+    ]
+]);
 $response = curl_exec($ch);
 curl_close($ch);
-echo $response;
 
 // Process M3U lines
 $combined_m3u = $jiom3u ."\n". $zee5m3u. "\n". $response;
