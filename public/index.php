@@ -89,7 +89,7 @@ $response = curl_exec($ch);
 curl_close($ch);
 echo "$response";
 
-$url = "https://raw.githubusercontent.com/geekyhimanshu/Khu/refs/heads/main/Sony Channel.m3u"; // Your API URL
+$url = "https://raw.githubusercontent.com/geekyhimanshu/Khu/refs/heads/main/Sony%20Channel.m3u"; // Your API URL
 $ch = curl_init(); 
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
