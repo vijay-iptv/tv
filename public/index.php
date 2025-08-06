@@ -99,6 +99,5 @@ curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Max execution time 30 sec
 $response = curl_exec($ch);
 curl_close($ch);
 echo "$response";
-
 exit;
 ?>
