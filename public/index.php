@@ -21,7 +21,7 @@ foreach ($json as $item) {
         ];
     }
 }
-$url = "https://m3u.ygxworld.in/p/KzKr3LpT0jEe/playlist.m3u";
+$url = "https://raw.githubusercontent.com/vijay-iptv/tamil/refs/heads/main/ygx.m3u";
 $ch = curl_init();
 
 curl_setopt_array($ch, [
@@ -30,13 +30,6 @@ curl_setopt_array($ch, [
     CURLOPT_FOLLOWLOCATION => true,
     CURLOPT_CONNECTTIMEOUT => 10,
     CURLOPT_TIMEOUT => 30,
-    CURLOPT_USERAGENT => "TiviMate/5.1.6 Android",
-    CURLOPT_SSL_VERIFYPEER => false,
-    CURLOPT_SSL_VERIFYHOST => false,
-    CURLOPT_HTTPHEADER => [
-        "Accept: */*",
-        "Connection: keep-alive"
-    ]
 ]);
 $response = curl_exec($ch);
 curl_close($ch);
