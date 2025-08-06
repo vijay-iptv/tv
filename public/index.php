@@ -88,5 +88,16 @@ curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Max execution time 30 sec
 $response = curl_exec($ch);
 curl_close($ch);
 echo "$response";
+
+$url = "https://raw.githubusercontent.com/geekyhimanshu/Khu/refs/heads/main/Sony Channel.m3u"; // Your API URL
+$ch = curl_init(); 
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10); // Timeout in 10 sec
+curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Max execution time 30 sec
+
+$response = curl_exec($ch);
+curl_close($ch);
+echo "$response";
 exit;
 ?>
