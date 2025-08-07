@@ -75,6 +75,7 @@ curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10); // Timeout in 10 sec
 curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Max execution time 30 sec
 
 $response = curl_exec($ch);
+
 curl_close($ch);
 $response = preg_replace(
     '/tvg-logo\s*=\s*"https:\/\/tatalogo\.pages\.dev\/968\.png"/',
