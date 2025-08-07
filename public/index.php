@@ -52,9 +52,9 @@ foreach ($lines as &$line) {
                 {
                     $line = preg_replace('/(tvg-id="[^"]+")/', '$1 tvg-logo="' . $logo . '"', $line);
                 }
-                if (preg_match('/group-title="JIO TV\+ \|[^"]*"/', $line) && $channelMap[$id] != '') 
+                if (preg_match('/group-title="JioPlus-[^"]*"/', $line) && $channelMap[$id] != '') 
                 {
-                    $line = preg_replace('/group-title="JIO TV\+ \|[^"]*"/', 'group-title="JioPlus-' . $lang . '"', $line);
+                    $line = preg_replace('/group-title="JioPlus-[^"]*"/', 'group-title="JioPlus-' . $lang . '"', $line);
                 }
                 else
                 {
@@ -75,9 +75,10 @@ curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10); // Timeout in 10 sec
 curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Max execution time 30 sec
 
 $response = curl_exec($ch);
+
 curl_close($ch);
 $response = preg_replace(
-    '/tvg-logo\s*=\s*"https:\/\/tatalogo\.pages\.dev\/968\.png"/',
+    '/tvg-logo\s*=\s*"https:\/\/yt3\.googleusercontent\.com\/GJVGgzRXxK1FDoUpC8ztBHPu81PMnhc8inodKtEckH-rykiYLzg93HUQIoTIirwORynozMkR=s900-c-k-c0x00ffffff-no-rj"/',
     'tvg-logo="https://raw.githubusercontent.com/vijay-iptv/logos/refs/heads/main/Zee_Tamil_News.png"',
     $response
 );
@@ -111,6 +112,5 @@ $response = preg_replace(
 );
 
 echo $response;
-
 exit;
 ?>
