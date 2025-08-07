@@ -3,7 +3,7 @@ error_reporting(0);
 date_default_timezone_set('Asia/Kolkata');
 
 $jio_m3u_url = 'https://raw.githubusercontent.com/alex4528/m3u/refs/heads/main/jstar.m3u';
-$zee5_m3u_url = 'https://raw.githubusercontent.com/alex4528/m3u/refs/heads/main/z5.m3u';
+$zee5_m3u_url = 'https://raw.githubusercontent.com/alex4528/m3u/refs/heads/main/z54.m3u';
 $json_url = 'https://raw.githubusercontent.com/vijay-iptv/JSON/refs/heads/main/jiodata.json';
 
 // Load M3U and JSON
@@ -56,6 +56,10 @@ foreach ($lines as &$line) {
                 {
                     $line = preg_replace('/group-title="JioPlus-[^"]*"/', 'group-title="JioPlus-' . $lang . '"', $line);
                 }
+                else if (preg_match('/group-title="Zee5-[^"]*"/', $line) && $channelMap[$id] != '') 
+                {
+                    $line = preg_replace('/group-title="Zee5-[^"]*"/', 'group-title="' . $lang . '"', $line);
+                }
                 else
                 {
                     $line = preg_replace('/group-title="[^"]*"/', 'group-title="JioStar-' . $lang . '"', $line);
@@ -75,7 +79,6 @@ curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10); // Timeout in 10 sec
 curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Max execution time 30 sec
 
 $response = curl_exec($ch);
-
 curl_close($ch);
 $response = preg_replace(
     '/tvg-logo\s*=\s*"https:\/\/yt3\.googleusercontent\.com\/GJVGgzRXxK1FDoUpC8ztBHPu81PMnhc8inodKtEckH-rykiYLzg93HUQIoTIirwORynozMkR=s900-c-k-c0x00ffffff-no-rj"/',
@@ -112,5 +115,6 @@ $response = preg_replace(
 );
 
 echo $response;
+
 exit;
 ?>
