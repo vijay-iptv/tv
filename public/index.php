@@ -98,8 +98,13 @@ curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Max execution time 30 sec
 
 $response = curl_exec($ch);
 curl_close($ch);
-preg_replace('/tvg-id="Sony Pix HD"/', '$1 tvg-logo="https://raw.githubusercontent.com/vijay-iptv/logos/refs/heads/main/Sony_Pix_HD.png"', $response);
-echo "$response";
+$response = preg_replace(
+    '/(tvg-id="Sony Pix HD")/',
+    '$1 tvg-logo="https://raw.githubusercontent.com/vijay-iptv/logos/refs/heads/main/Sony_Pix_HD.png"',
+    $response
+);
+
+echo $response;
 
 exit;
 ?>
