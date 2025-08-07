@@ -97,6 +97,7 @@ curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10); // Timeout in 10 sec
 curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Max execution time 30 sec
 
 $response = curl_exec($ch);
+
 curl_close($ch);
 $response = preg_replace(
     '/tvg-logo\s*=\s*"https:\/\/xstreamcp-assets-msp\.streamready\.in\/assets\/LIVETV\/LIVECHANNEL\/LIVETV_LIVETVCHANNEL_SONY_PIX_HD\/images\/LOGO_HD\/image\.png"/',
