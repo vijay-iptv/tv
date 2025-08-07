@@ -76,6 +76,11 @@ curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Max execution time 30 sec
 
 $response = curl_exec($ch);
 curl_close($ch);
+$response = preg_replace(
+    '/tvg-logo\s*=\s*"https:\/\/tatalogo\.pages\.dev\/968\.png"/',
+    'tvg-logo="https://raw.githubusercontent.com/vijay-iptv/logos/refs/heads/main/Zee_Tamil_News.png"',
+    $response
+);
 echo "$response";
 
 $url = "https://raw.githubusercontent.com/vijay-iptv/tamil/refs/heads/main/iptv.m3u"; // Your API URL
