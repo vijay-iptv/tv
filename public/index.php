@@ -69,6 +69,7 @@ foreach ($lines as &$line) {
     }
 }
 header('Content-Type: text/plain');
+echo '#EXTM3U x-tvg-url="https://live.dinesh29.com.np/epg/jiotvplus/master-epg.xml.gz';
 echo implode("\n", $lines);
 
 $url = "https://arunjunan20.github.io/My-IPTV/"; // Your API URL
