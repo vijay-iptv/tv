@@ -72,51 +72,34 @@ header('Content-Type: text/plain');
 echo '#EXTM3U x-tvg-url="https://live.dinesh29.com.np/epg/jiotvplus/master-epg.xml.gz';
 echo implode("\n", $lines);
 
-$url = "http://live.dinesh29.com.np/jiotvplus.m3u"; // Your API URL
+$dinesh_url = "http://live.dinesh29.com.np/jiotvplus.m3u"; // Your API URL
 $ch = curl_init(); 
-curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_URL, $dinesh_url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10); // Timeout in 10 sec
-curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Max execution time 30 sec
+curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
-$response = curl_exec($ch);
+$m3u = curl_exec($ch);
 curl_close($ch);
-$lines = explode("\n", $response);
-
-// Prepare output
-$output = [];
-for ($i = 0; $i < count($lines); $i++) {
-    $line = trim($lines[$i]);
-
-    if (strpos($line, '#EXTINF') === 0) {
-        preg_match('/tvg-id="([^"]+)"/', $line, $matches);
-        $oldId = isset($matches[1]) ? $matches[1] : '';
-
-        foreach ($json as $ch) {
-            $newId = strtolower(str_replace(' ', '', $ch['channel_name']));
-
-            if ($oldId === $newId || stripos($line, $ch['channel_name']) !== false) {
-                $line = sprintf(
-                    '#EXTINF:-1 tvg-id="%s" tvg-logo="%s" group-title="%s",%s',
-                    $newId,
-                    $ch['logoUrl'],
-                    'JioPlus2-'.$ch['channelLanguageId'],
-                    $ch['channel_name']
-                );
-                break;
-            }
-        }
+foreach ($json as $channel) {
+    $tvgId = strtolower(str_replace(' ', '', $channel['channel_name']));
+    
+    // Match EXTINF line with this tvg-id
+    $pattern = '/(#EXTINF:-1\s+tvg-id="'.$tvgId.'".*?),(.*)/i';
+    
+    if (preg_match($pattern, $m3u, $matches)) {
+        // Build replacement EXTINF line
+        $replacement = '#EXTINF:-1 tvg-id="'.$tvgId.'" tvg-logo="'.$channel['logoUrl'].'" group-title="JioPlus2-'.$channel['channelLanguageId'].'",'.$channel['channel_name'];
+        
+        // Replace in whole playlist
+        $m3u = str_replace($matches[0], $replacement, $m3u);
     }
-
-    $output[] = $line;
 }
 
-// Convert back to string
-$updatedM3u = implode("\n", $output);
-
-// Print final playlist as string
-echo $updatedM3u;
-
+header('Content-Type: text/plain');
+echo $m3u;
 
 $url = "https://arunjunan20.github.io/My-IPTV/"; // Your API URL
 $ch = curl_init(); 
