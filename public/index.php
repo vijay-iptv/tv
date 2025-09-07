@@ -81,12 +81,41 @@ curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Max execution time 30 sec
 
 $response = curl_exec($ch);
 curl_close($ch);
-$response = preg_replace(
-    '/tvg-logo\s*=\s*"https:\/\/yt3\.googleusercontent\.com\/GJVGgzRXxK1FDoUpC8ztBHPu81PMnhc8inodKtEckH-rykiYLzg93HUQIoTIirwORynozMkR=s900-c-k-c0x00ffffff-no-rj"/',
-    'tvg-logo="https://raw.githubusercontent.com/vijay-iptv/logos/refs/heads/main/Zee_Tamil_News.png"',
-    $response
-);
-echo "$response";
+$lines = explode("\n", $response);
+
+// Prepare output
+$output = [];
+for ($i = 0; $i < count($lines); $i++) {
+    $line = trim($lines[$i]);
+
+    if (strpos($line, '#EXTINF') === 0) {
+        preg_match('/tvg-id="([^"]+)"/', $line, $matches);
+        $oldId = $matches[1] ?? '';
+
+        foreach ($json as $ch) {
+            $newId = strtolower(str_replace(' ', '', $ch['channel_name']));
+
+            if ($oldId === $newId || stripos($line, $ch['channel_name']) !== false) {
+                $line = sprintf(
+                    '#EXTINF:-1 tvg-id="%s" tvg-logo="%s" group-title="%s",%s',
+                    $newId,
+                    $ch['logoUrl'],
+                    'JioPlus2-'.$ch['channelLanguageId'],
+                    $ch['channel_name']
+                );
+                break;
+            }
+        }
+    }
+
+    $output[] = $line;
+}
+
+// Convert back to string
+$updatedM3u = implode("\n", $output);
+
+// Print final playlist as string
+echo $updatedM3u;
 
 
 $url = "https://arunjunan20.github.io/My-IPTV/"; // Your API URL
