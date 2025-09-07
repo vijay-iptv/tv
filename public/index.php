@@ -90,7 +90,7 @@ for ($i = 0; $i < count($lines); $i++) {
 
     if (strpos($line, '#EXTINF') === 0) {
         preg_match('/tvg-id="([^"]+)"/', $line, $matches);
-        $oldId = $matches[1] ?? '';
+        $oldId = isset($matches[1]) ? $matches[1] : '';
 
         foreach ($json as $ch) {
             $newId = strtolower(str_replace(' ', '', $ch['channel_name']));
