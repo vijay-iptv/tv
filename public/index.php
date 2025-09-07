@@ -72,6 +72,23 @@ header('Content-Type: text/plain');
 echo '#EXTM3U x-tvg-url="https://live.dinesh29.com.np/epg/jiotvplus/master-epg.xml.gz';
 echo implode("\n", $lines);
 
+$url = "http://live.dinesh29.com.np/jiotvplus.m3u"; // Your API URL
+$ch = curl_init(); 
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10); // Timeout in 10 sec
+curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Max execution time 30 sec
+
+$response = curl_exec($ch);
+curl_close($ch);
+$response = preg_replace(
+    '/tvg-logo\s*=\s*"https:\/\/yt3\.googleusercontent\.com\/GJVGgzRXxK1FDoUpC8ztBHPu81PMnhc8inodKtEckH-rykiYLzg93HUQIoTIirwORynozMkR=s900-c-k-c0x00ffffff-no-rj"/',
+    'tvg-logo="https://raw.githubusercontent.com/vijay-iptv/logos/refs/heads/main/Zee_Tamil_News.png"',
+    $response
+);
+echo "$response";
+
+
 $url = "https://arunjunan20.github.io/My-IPTV/"; // Your API URL
 $ch = curl_init(); 
 curl_setopt($ch, CURLOPT_URL, $url);
