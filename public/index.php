@@ -35,7 +35,7 @@ $response = curl_exec($ch);
 curl_close($ch);
 
 // Process M3U lines
-$combined_m3u = $jiom3u ."\n". $zee5m3u. "\n". $response;
+$combined_m3u = $jiom3u ."\n". $zee5m3u;
 $lines = explode("\n", $combined_m3u);
 foreach ($lines as &$line) {
     if (strpos($line, '#EXTINF:') === 0) {
