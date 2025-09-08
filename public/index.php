@@ -117,12 +117,12 @@ $response = preg_replace(
 );
 $response = preg_replace(
     '/tvg-id\s*=\s*"HBO"/',
-     'tvg-logo="https://raw.githubusercontent.com/vijay-iptv/logos/refs/heads/main/HBO.png"',
+     'tvg-id="HBO" tvg-logo="https://raw.githubusercontent.com/vijay-iptv/logos/refs/heads/main/HBO.png"',
     $response
 );
 $response = preg_replace(
     '/tvg-id\s*=\s*"Cinemax"/',
-     'tvg-logo="https://raw.githubusercontent.com/vijay-iptv/logos/refs/heads/main/Cinemax.png"',
+     'tvg-id="Cinemax" tvg-logo="https://raw.githubusercontent.com/vijay-iptv/logos/refs/heads/main/Cinemax.png"',
     $response
 );
 echo "$response";
