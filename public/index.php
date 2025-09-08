@@ -115,6 +115,16 @@ $response = preg_replace(
     'tvg-logo="https://raw.githubusercontent.com/vijay-iptv/logos/refs/heads/main/Zee_Tamil_News.png"',
     $response
 );
+$response = preg_replace(
+    '/tvg-id\s*=\s*"HBO"/',
+     tvg-logo="https://raw.githubusercontent.com/vijay-iptv/logos/refs/heads/main/HBO.png"',
+    $response
+);
+$response = preg_replace(
+    '/tvg-id\s*=\s*"Cinemax"/',
+     tvg-logo="https://raw.githubusercontent.com/vijay-iptv/logos/refs/heads/main/Cinemax.png"',
+    $response
+);
 echo "$response";
 
 $url = "https://raw.githubusercontent.com/vijay-iptv/tamil/refs/heads/main/iptv.m3u"; // Your API URL
