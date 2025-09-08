@@ -69,7 +69,7 @@ foreach ($lines as &$line) {
     }
 }
 header('Content-Type: text/plain');
-echo '#EXTM3U x-tvg-url="https://live.dinesh29.com.np/epg/jiotvplus/master-epg.xml.gz';
+echo '#EXTM3U x-tvg-url="https://live.dinesh29.com.np/epg/jiotvplus/master-epg.xml.gz \n';
 echo implode("\n", $lines);
 
 $dinesh_url = "http://live.dinesh29.com.np/jiotvplus.m3u"; // Your API URL
