@@ -2,7 +2,7 @@
 error_reporting(0);
 date_default_timezone_set('Asia/Kolkata');
 
-$jio_m3u_url = 'https://raw.githubusercontent.com/alex4528/m3u/main/jstar.m3u';
+$jio_m3u_url = 'https://raw.githubusercontent.com/alex8875/m3u/refs/heads/main/jstar.m3u';
 $zee5_m3u_url = 'https://raw.githubusercontent.com/alex8875/m3u/refs/heads/main/z5.m3u';
 $json_url = 'https://raw.githubusercontent.com/vijay-iptv/JSON/refs/heads/main/jiodata.json';
 
