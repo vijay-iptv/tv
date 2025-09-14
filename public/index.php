@@ -27,7 +27,7 @@ foreach ($json as $item) {
         $output .= '#KODIPROP:inputstream.adaptive.license_type=clearkey' . PHP_EOL;
         $output .= '#KODIPROP:inputstream.adaptive.license_key=' . $item['license_key'] . PHP_EOL;
         $output .= '#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/69.1 ExoPlayerLib/824.0' . PHP_EOL;
-        $output .= 'https://jiotvmblive.cdn.jio.com/bpk-tv/' . $item['bts'] . '/output/index.mpd' . PHP_EOL . PHP_EOL;
+        $output .= 'https://jiotvmblive.cdn.jio.com/bpk-tv/' . $item['bts'] . '/index.mpd' . PHP_EOL . PHP_EOL;
     }
 }
 // Process M3U lines
