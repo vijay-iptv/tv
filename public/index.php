@@ -162,8 +162,6 @@ $response = preg_replace(
     'tvg-logo="https://raw.githubusercontent.com/vijay-iptv/logos/refs/heads/main/Sony_Pix_HD.png"',
     $response
 );
-
 echo $response;
-
 exit;
 ?>
