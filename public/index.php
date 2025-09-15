@@ -182,6 +182,13 @@ function extractCookies($header)
     }
     return $cookies;
 }
+function extractHdneaFromUrl($url) {
+    $parts = parse_url($url);
+    if (!isset($parts['query'])) {
+        return null;
+    }
+    return '__hdnea__=' . $parts['query'];
+}
 $filePath = KEY_FOLDER.'/creds.jtv';
 $TokenNeedsRefresh = !file_exists($filePath) || (time() - filemtime($filePath) > TOKEN_EXPIRY_TIME);
 if ($TokenNeedsRefresh) {
@@ -197,11 +204,18 @@ $jsonData = getJioTvData(896);
 list($baseUrl, $query) = explode('?', $jsonData['result'], 2);
 $cookies_y = strpos($query, "minrate=") ? explode("&", $query)[2] : $query;
 $chs = explode('/', $baseUrl);
-$cookiesdata = getCookiesFromUrl($jsonData['result']);
+$headers = [
+    'Cookie: ' . $cookies_y,
+    'Content-Type: application/x-www-form-urlencoded',
+    'User-Agent: plaYtv/7.1.3 (Linux;Android 14) ExoPlayerLib/2.11.7'
+];
+$cookiesdata = getCookiesFromUrl($jsonData['result'], $headers);
+$cooKieesData = extractHdneaFromUrl($jsonData['result']);
 $cooKiee = '__hdnea__=' . $cookiesdata['__hdnea__'];
 
 echo '<pre>';
 print_r($jsonData).'<br>';
+print_r($cooKieesData);
 print_r($cookiesdata);
 echo '<pre>';exit;
 
