@@ -13,6 +13,26 @@ $json = json_decode(file_get_contents($json_url), true);
 
 // Build lookup map: tvg-id → [logoUrl, channelLanguageId]
 $channelMap = [];
+// current timestamp
+$st = time(); 
+
+// expiry = st + 24 hours
+$exp = $st + 86400;
+
+// Example values
+$acl = '/*';
+
+// Normally, hmac is generated using a secret key
+// For demo, we'll just hardcode a dummy value
+$secret = "my_secret_key";
+$hmac = "c0c4aa604b7239a5779df12f04fc9abbcdf6a4806d5dc8ce8c3c274dbd0a73c2&xxx";
+
+// Construct the cookie
+$cookie = "__hdnea__=st=$st~exp=$exp~acl=$acl~hmac=$hmac";
+
+// Final line
+$extHttp = '#EXTHTTP:{"cookie":"' . $cookie . '"}';
+
 $output = '#EXTM3U x-tvg-url="https://avkb.short.gy/jioepg.xml.gz"' . PHP_EOL;
 foreach ($json as $item) {
     if (isset($item['channel_id'], $item['logoUrl'], $item['channelLanguageId'])) {
@@ -27,6 +47,7 @@ foreach ($json as $item) {
         $output .= '#KODIPROP:inputstream.adaptive.license_type=clearkey' . PHP_EOL;
         $output .= '#KODIPROP:inputstream.adaptive.license_key=' . $item['license_key'] . PHP_EOL;
         $output .= '#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/69.1 ExoPlayerLib/824.0' . PHP_EOL;
+        $output .= $extHttp . PHP_EOL;
         $output .= 'https://jiotvmblive.cdn.jio.com/bpk-tv/' . $item['bts'] . '/index.mpd' . PHP_EOL . PHP_EOL;
     }
 }
