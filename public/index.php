@@ -224,8 +224,8 @@ $headers = [
     'Content-Type: application/x-www-form-urlencoded',
     'User-Agent: plaYtv/7.1.3 (Linux;Android 14) ExoPlayerLib/2.11.7'
 ];
-$cookiesdata = getCookiesFromUrl($jsonData['result'], $headers);
-$cooKieesData = cleanHdneaFromUrl($jsonData['result']);
+//$cookiesdata = getCookiesFromUrl($jsonData['result'], $headers);
+$cooKieesData = extractHdneaToken($jsonData['result']);
 $cooKiee = '__hdnea__=' . $cookiesdata['__hdnea__'];
 
 echo '<pre>';
