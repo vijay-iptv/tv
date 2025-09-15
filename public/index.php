@@ -155,7 +155,8 @@ function getCookiesFromUrl($url, $headers = [], $post_fields = null)
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_HEADER => true,
         CURLOPT_HTTPHEADER => $headers,
-        CURLOPT_FOLLOWLOCATION => false,             
+        CURLOPT_FOLLOWLOCATION => true,   // follow redirects
+        CURLOPT_AUTOREFERER => true,            
     ]);
 
     if ($post_fields !== null) {
@@ -198,6 +199,11 @@ $cookies_y = strpos($query, "minrate=") ? explode("&", $query)[2] : $query;
 $chs = explode('/', $baseUrl);
 $cookiesdata = getCookiesFromUrl($jsonData['result']);
 $cooKiee = '__hdnea__=' . $cookiesdata['__hdnea__'];
+
+echo '<pre>';
+print_r($jsonData).'<br>';
+print_r($cookiesdata);
+echo '<pre>';exit;
 
 //$jio_m3u_url = 'https://raw.githubusercontent.com/alex8875/m3u/refs/heads/main/jstar.m3u';
 $zee5_m3u_url = 'https://raw.githubusercontent.com/alex8875/m3u/refs/heads/main/z5.m3u';
