@@ -2,6 +2,7 @@
 error_reporting(0);
 date_default_timezone_set('Asia/Kolkata');
 define('TOKEN_EXPIRY_TIME', 7000);
+define('KEY_FOLDER', '/var/www/secrets');
 function cUrlGetData($url, $headers = null, $post_fields = null)
 {
     $ch = curl_init();
@@ -51,8 +52,8 @@ function decrypt_data($e_data, $key)
 
 function getCRED()
 {
-    $filePath = 'creds.jtv';
-    $key_data = file_get_contents('credskey.jtv');
+    $filePath = KEY_FOLDER.'/creds.jtv';
+    $key_data = file_get_contents(KEY_FOLDER.'/credskey.jtv');
     return decrypt_data(file_get_contents($filePath), $key_data);
 }
 
@@ -186,8 +187,8 @@ if ($TokenNeedsRefresh) {
     $old_data = json_decode($old_data, true);
     $old_data["authToken"] = $new_auth["authToken"];
     $new_auth = json_encode($old_data);
-    $key_data = file_get_contents("credskey.jtv");
-    file_put_contents("creds.jtv", encrypt_data($new_auth, $key_data));
+    $key_data = file_get_contents(KEY_FOLDER."/credskey.jtv");
+    file_put_contents(KEY_FOLDER."/creds.jtv", encrypt_data($new_auth, $key_data));
 }
 $jsonData = getJioTvData(896);
 list($baseUrl, $query) = explode('?', $jsonData['result'], 2);
@@ -219,8 +220,8 @@ foreach ($json as $item) {
         $output .= '#KODIPROP:inputstream.adaptive.license_type=clearkey' . PHP_EOL;
         $output .= '#KODIPROP:inputstream.adaptive.license_key=' . $item['license_key'] . PHP_EOL;
         $output .= '#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/69.1 ExoPlayerLib/824.0' . PHP_EOL;
-        $output .= $cooKiee . PHP_EOL;
-        $output .= 'https://jiotvmblive.cdn.jio.com/bpk-tv/' . $item['bts'] . '/index.mpd' . PHP_EOL . PHP_EOL;
+        $output .= '#EXTHTTP:{"cookie":"'.$cooKiee.'"}'  . PHP_EOL;
+        $output .= 'https://jiotvmblive.cdn.jio.com/bpk-tv/' . $item['bts'] . '/index.mpd'.$cooKiee.'&xxx=%7Ccookie='.$cooKiee . PHP_EOL . PHP_EOL;
     }
 }
 // Process M3U lines
