@@ -182,46 +182,26 @@ function extractCookies($header)
     }
     return $cookies;
 }
-function getHdneaToken($url, $headers = [], $post_fields = null)
+function cleanHdneaFromUrl($url)
 {
-    // --- 1. Try to get from Set-Cookie headers ---
-    $ch = curl_init($url);
-    curl_setopt_array($ch, [
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_HEADER => true,
-        CURLOPT_HTTPHEADER => $headers,
-        CURLOPT_FOLLOWLOCATION => true,
-    ]);
-
-    if ($post_fields !== null) {
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_fields);
-    }
-
-    $response = curl_exec($ch);
-    $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-    $header_block = substr($response, 0, $header_size);
-    curl_close($ch);
-
-    // Extract cookies
-    $cookies = [];
-    preg_match_all('/^Set-Cookie:\s*([^;]*)/mi', $header_block, $matches);
-    foreach ($matches[1] as $item) {
-        parse_str($item, $cookie);
-        $cookies = array_merge($cookies, $cookie);
-    }
-
-    if (!empty($cookies['__hdnea__'])) {
-        return '__hdnea__=' . $cookies['__hdnea__'];
-    }
-
-    // --- 2. Fallback: extract from query string ---
     $parts = parse_url($url);
-    if (!empty($parts['query'])) {
+    if (empty($parts['query'])) {
+        return null;
+    }
+
+    parse_str($parts['query'], $queryParams);
+
+    // Case 1: already in query param
+    if (!empty($queryParams['__hdnea__'])) {
+        return '__hdnea__=' . $queryParams['__hdnea__'];
+    }
+
+    // Case 2: token is the entire query string
+    if (preg_match('/^st=\d+~exp=\d+~acl=.*~hmac=[a-f0-9]+$/', $parts['query'])) {
         return '__hdnea__=' . $parts['query'];
     }
 
-    return null; // failed
+    return null;
 }
 $filePath = KEY_FOLDER.'/creds.jtv';
 $TokenNeedsRefresh = !file_exists($filePath) || (time() - filemtime($filePath) > TOKEN_EXPIRY_TIME);
@@ -244,7 +224,7 @@ $headers = [
     'User-Agent: plaYtv/7.1.3 (Linux;Android 14) ExoPlayerLib/2.11.7'
 ];
 $cookiesdata = getCookiesFromUrl($jsonData['result'], $headers);
-$cooKieesData = getHdneaToken($jsonData['result']);
+$cooKieesData = cleanHdneaFromUrl($jsonData['result']);
 $cooKiee = '__hdnea__=' . $cookiesdata['__hdnea__'];
 
 echo '<pre>';
