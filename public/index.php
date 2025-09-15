@@ -9,6 +9,7 @@ function cUrlGetData($url, $headers = null, $post_fields = null)
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
 
     if (!empty($post_fields)) {
         curl_setopt($ch, CURLOPT_POST, 1);
@@ -154,6 +155,7 @@ function getCookiesFromUrl($url, $headers = [], $post_fields = null)
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_HEADER => true,
         CURLOPT_HTTPHEADER => $headers,
+        CURLOPT_FOLLOWLOCATION => false,             
     ]);
 
     if ($post_fields !== null) {
