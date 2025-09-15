@@ -204,22 +204,7 @@ if ($TokenNeedsRefresh) {
 }
 $jsonData = getJioTvData(896);
 list($baseUrl, $query) = explode('?', $jsonData['result'], 2);
-$cookies_y = strpos($query, "minrate=") ? explode("&", $query)[2] : $query;
-$chs = explode('/', $baseUrl);
-$headers = [
-    'Cookie: ' . $cookies_y,
-    'Content-Type: application/x-www-form-urlencoded',
-    'User-Agent: plaYtv/7.1.3 (Linux;Android 14) ExoPlayerLib/2.11.7'
-];
-//$cookiesdata = getCookiesFromUrl($jsonData['result'], $headers);
-$cooKieesData = extractHdneaToken($query);
-$cooKiee = '__hdnea__=' . $cookiesdata['__hdnea__'];
-
-echo '<pre>';
-print_r($jsonData).'<br>';
-print_r($cooKieesData);
-print_r($cookiesdata);
-echo '<pre>';exit;
+$cooKiee = extractHdneaToken($query);
 
 //$jio_m3u_url = 'https://raw.githubusercontent.com/alex8875/m3u/refs/heads/main/jstar.m3u';
 $zee5_m3u_url = 'https://raw.githubusercontent.com/alex8875/m3u/refs/heads/main/z5.m3u';
