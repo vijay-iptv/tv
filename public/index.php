@@ -182,27 +182,14 @@ function extractCookies($header)
     }
     return $cookies;
 }
-function extractHdneaToken($url)
+function extractHdneaToken($raw)
 {
-    $parts = parse_url($url);
-    if (empty($parts['query'])) {
-        return null;
+    if (preg_match('/st=[^~]+~exp=[^~]+~acl=[^~]+~hmac=[a-f0-9]+/i', $raw, $matches)) {
+        // Force ACL to be /*
+        $token = preg_replace('/acl=[^~]+/', 'acl=/*', $matches[0]);
+        return '__hdnea__=' . $token;
     }
-
-    // Split query into params
-    parse_str($parts['query'], $queryParams);
-
-    // Case 1: __hdnea__ exists as a query parameter
-    if (!empty($queryParams['__hdnea__'])) {
-        return '__hdnea__=' . $queryParams['__hdnea__'];
-    }
-
-    // Case 2: The whole query string IS the token
-    if (preg_match('/^st=\d+~exp=\d+~acl=.*~hmac=[a-f0-9]+$/', $parts['query'])) {
-        return '__hdnea__=' . $parts['query'];
-    }
-
-    return null; // nothing valid found
+    return null;
 }
 $filePath = KEY_FOLDER.'/creds.jtv';
 $TokenNeedsRefresh = !file_exists($filePath) || (time() - filemtime($filePath) > TOKEN_EXPIRY_TIME);
@@ -225,7 +212,7 @@ $headers = [
     'User-Agent: plaYtv/7.1.3 (Linux;Android 14) ExoPlayerLib/2.11.7'
 ];
 //$cookiesdata = getCookiesFromUrl($jsonData['result'], $headers);
-$cooKieesData = extractHdneaToken($jsonData['result']);
+$cooKieesData = extractHdneaToken($query);
 $cooKiee = '__hdnea__=' . $cookiesdata['__hdnea__'];
 
 echo '<pre>';
