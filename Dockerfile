@@ -1,19 +1,20 @@
 FROM php:8.2-apache
 
-# Set working directory
+# Set working directory for Apache
 WORKDIR /var/www/html
 
-# Copy app files
+# Copy public app files (served by Apache)
 COPY ./public/ /var/www/html/
 
-# Copy secret files outside of the public directory (not exposed to web)
+# Copy secret files into a non-public folder (safe from web access)
 COPY creds.jtv credskey.jtv /var/www/secrets/
 
-# Apache expects to run on port 10000 on Render
+# Change Apache port to 10000 (Render requirement)
 RUN sed -i 's/80/10000/' /etc/apache2/ports.conf && \
-    sed -i 's/80/10000/' /etc/apache2/sites-available/000-default.conf
+    sed -i 's/:80/:10000/' /etc/apache2/sites-available/000-default.conf
 
+# Expose Render port
 EXPOSE 10000
 
-# Enable mod_rewrite if needed
+# Enable Apache rewrite module (for pretty URLs/htaccess)
 RUN a2enmod rewrite
