@@ -179,7 +179,7 @@ function extractCookies($header)
     }
     return $cookies;
 }
-$filePath = 'creds.jtv';
+$filePath = KEY_FOLDER.'/creds.jtv';
 $TokenNeedsRefresh = !file_exists($filePath) || (time() - filemtime($filePath) > TOKEN_EXPIRY_TIME);
 if ($TokenNeedsRefresh) {
     $new_auth = refresh_jio_token();
