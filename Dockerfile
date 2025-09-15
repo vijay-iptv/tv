@@ -6,6 +6,9 @@ WORKDIR /var/www/html
 # Copy app files
 COPY ./public/ /var/www/html/
 
+# Copy secret files outside of the public directory (not exposed to web)
+COPY creds.jtv credskey.jtv /var/www/secrets/
+
 # Apache expects to run on port 10000 on Render
 RUN sed -i 's/80/10000/' /etc/apache2/ports.conf && \
     sed -i 's/80/10000/' /etc/apache2/sites-available/000-default.conf
