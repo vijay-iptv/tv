@@ -182,12 +182,46 @@ function extractCookies($header)
     }
     return $cookies;
 }
-function extractHdneaFromUrl($url) {
-    $parts = parse_url($url);
-    if (!isset($parts['query'])) {
-        return null;
+function getHdneaToken($url, $headers = [], $post_fields = null)
+{
+    // --- 1. Try to get from Set-Cookie headers ---
+    $ch = curl_init($url);
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HEADER => true,
+        CURLOPT_HTTPHEADER => $headers,
+        CURLOPT_FOLLOWLOCATION => true,
+    ]);
+
+    if ($post_fields !== null) {
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_fields);
     }
-    return '__hdnea__=' . $parts['query'];
+
+    $response = curl_exec($ch);
+    $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+    $header_block = substr($response, 0, $header_size);
+    curl_close($ch);
+
+    // Extract cookies
+    $cookies = [];
+    preg_match_all('/^Set-Cookie:\s*([^;]*)/mi', $header_block, $matches);
+    foreach ($matches[1] as $item) {
+        parse_str($item, $cookie);
+        $cookies = array_merge($cookies, $cookie);
+    }
+
+    if (!empty($cookies['__hdnea__'])) {
+        return '__hdnea__=' . $cookies['__hdnea__'];
+    }
+
+    // --- 2. Fallback: extract from query string ---
+    $parts = parse_url($url);
+    if (!empty($parts['query'])) {
+        return '__hdnea__=' . $parts['query'];
+    }
+
+    return null; // failed
 }
 $filePath = KEY_FOLDER.'/creds.jtv';
 $TokenNeedsRefresh = !file_exists($filePath) || (time() - filemtime($filePath) > TOKEN_EXPIRY_TIME);
@@ -210,7 +244,7 @@ $headers = [
     'User-Agent: plaYtv/7.1.3 (Linux;Android 14) ExoPlayerLib/2.11.7'
 ];
 $cookiesdata = getCookiesFromUrl($jsonData['result'], $headers);
-$cooKieesData = extractHdneaFromUrl($jsonData['result']);
+$cooKieesData = getHdneaToken($jsonData['result']);
 $cooKiee = '__hdnea__=' . $cookiesdata['__hdnea__'];
 
 echo '<pre>';
