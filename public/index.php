@@ -182,26 +182,27 @@ function extractCookies($header)
     }
     return $cookies;
 }
-function cleanHdneaFromUrl($url)
+function extractHdneaToken($url)
 {
     $parts = parse_url($url);
     if (empty($parts['query'])) {
         return null;
     }
 
+    // Split query into params
     parse_str($parts['query'], $queryParams);
 
-    // Case 1: already in query param
+    // Case 1: __hdnea__ exists as a query parameter
     if (!empty($queryParams['__hdnea__'])) {
         return '__hdnea__=' . $queryParams['__hdnea__'];
     }
 
-    // Case 2: token is the entire query string
+    // Case 2: The whole query string IS the token
     if (preg_match('/^st=\d+~exp=\d+~acl=.*~hmac=[a-f0-9]+$/', $parts['query'])) {
         return '__hdnea__=' . $parts['query'];
     }
 
-    return null;
+    return null; // nothing valid found
 }
 $filePath = KEY_FOLDER.'/creds.jtv';
 $TokenNeedsRefresh = !file_exists($filePath) || (time() - filemtime($filePath) > TOKEN_EXPIRY_TIME);
